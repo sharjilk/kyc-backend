@@ -5,7 +5,6 @@ interface User extends Document {
   email: string;
   password: string;
   role: "User" | "Admin";
-  kycStatus: "Pending" | "Approved" | "Rejected";
 }
 
 const userSchema = new Schema<User>(
@@ -27,11 +26,6 @@ const userSchema = new Schema<User>(
       type: String,
       enum: ["User", "Admin"],
       default: "User",
-    },
-    kycStatus: {
-      type: String,
-      enum: ["Pending", "Approved", "Rejected"],
-      default: "Pending",
     },
   },
   {
