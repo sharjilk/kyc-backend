@@ -44,4 +44,11 @@ router.patch(
   KycController.KycUpdate as (req: Request, res: Response) => Promise<void>
 );
 
+router.get(
+  "/submissions",
+  verifyToken,
+  isAdmin,
+  KycController.getAllSubmissions
+);
+
 export { router as KycRouter };

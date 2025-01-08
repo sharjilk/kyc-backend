@@ -81,8 +81,24 @@ const getKycStatus = async (req: Request, res: Response) => {
   }
 };
 
+const getAllSubmissions = async (req: Request, res: Response) => {
+  try {
+    const submissions = await KycService.getAllKycSubmissions();
+
+    res.status(200).json(submissions);
+  } catch (error) {
+    console.error("Error fetching all submissions:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching all submissions",
+      details: error,
+    });
+  }
+};
+
 export const KycController = {
   KycSubmit,
   KycUpdate,
   getKycStatus,
+  getAllSubmissions,
 };
