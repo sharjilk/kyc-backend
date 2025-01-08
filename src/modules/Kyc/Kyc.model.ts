@@ -1,12 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
+import { IKyc, KycModel } from "./kyc.interface";
 
-interface Kyc extends Document {
-  userId: mongoose.Types.ObjectId;
-  documentUrl: string;
-  status: "Pending" | "Approved" | "Rejected";
-}
-
-const kycSchema = new Schema<Kyc>(
+const kycSchema = new Schema<IKyc, KycModel>(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     documentUrl: { type: String, required: true },
@@ -21,4 +16,4 @@ const kycSchema = new Schema<Kyc>(
   }
 );
 
-export default mongoose.model<Kyc>("Kyc", kycSchema);
+export const Kyc = mongoose.model<IKyc, KycModel>("Kyc", kycSchema);

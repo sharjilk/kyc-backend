@@ -1,11 +1,8 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
-import mongoose from "mongoose";
-import { AuthRouter } from "./routes/auth.route";
-import { KycRouter } from "./routes/kyc.route";
+import routes from "./routes/routes";
 
 const app: Application = express();
-const port = process.env.PORT || 3000;
 
 /*
  * Middlewares
@@ -19,10 +16,9 @@ app.use(
 );
 
 /*
- * Routes
+ * Apply all Routes
  */
-app.use("/api/auth", AuthRouter);
-app.use("/api/kyc", KycRouter);
+app.use("/", routes);
 
 /**
  * Default route

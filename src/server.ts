@@ -8,8 +8,8 @@ const server = async () => {
 
     console.log("Connected to MongoDB database");
 
-    app.listen(process.env.PORT || 3000, () => {
-      console.log(`Server is listening on port ${process.env.PORT}`);
+    app.listen(config.port || 3000, () => {
+      console.log(`Server is listening on port ${config.port}`);
     });
   } catch (error) {
     console.log(error);

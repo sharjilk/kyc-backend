@@ -1,10 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+import config from "../util/config";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: JwtPayload | string;
+      user?: {
+        id: string;
+        role: string;
+      };
     }
   }
 }
@@ -25,8 +29,11 @@ export const verifyToken = (
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = decoded;
+    const decoded = jwt.verify(token, config.jwt_secret as string) as {
+      _id: string;
+      role: string;
+    };
+    req.user = { id: decoded._id, role: decoded.role };
     next();
   } catch (error) {
     res.status(403).json({ message: "Invalid token." });
