@@ -30,10 +30,10 @@ export const verifyToken = (
 
   try {
     const decoded = jwt.verify(token, config.jwt_secret as string) as {
-      _id: string;
+      id: string;
       role: string;
     };
-    req.user = { id: decoded._id, role: decoded.role };
+    req.user = { id: decoded.id, role: decoded.role };
     next();
   } catch (error) {
     res.status(403).json({ message: "Invalid token." });
