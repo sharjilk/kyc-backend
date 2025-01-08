@@ -55,7 +55,34 @@ const KycUpdate = async (req: Request, res: Response) => {
   }
 };
 
+const getKycStatus = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User not authenticated." });
+    }
+
+    const kycStatus = await KycService.getKycStatus(userId);
+
+    if (!kycStatus) {
+      return res.status(404).json({ status: null });
+    }
+
+    res.status(200).json({ status: kycStatus });
+  } catch (error) {
+    console.error("Error fetching KYC status:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching KYC status",
+      details: error,
+    });
+  }
+};
+
 export const KycController = {
   KycSubmit,
   KycUpdate,
+  getKycStatus,
 };

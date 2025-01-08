@@ -26,6 +26,12 @@ router.post(
   KycController.KycSubmit as (req: Request, res: Response) => Promise<void>
 );
 
+router.get(
+  "/status",
+  verifyToken,
+  KycController.getKycStatus as (req: Request, res: Response) => Promise<void>
+);
+
 router.patch(
   "/:id",
   verifyToken,
