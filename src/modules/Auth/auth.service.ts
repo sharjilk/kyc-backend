@@ -26,7 +26,6 @@ const createUser = async (userData: IUser): Promise<IUser> => {
 const loginUser = async (email: string, password: string) => {
   try {
     const user = await User.findOne({ email }).select("+password");
-    console.log("user logged", user);
     if (!user) {
       throw new Error("User not found");
     }
