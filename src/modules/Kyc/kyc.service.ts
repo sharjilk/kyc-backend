@@ -40,7 +40,12 @@ const getKycStatus = async (
 };
 
 const getAllKycSubmissions = async (): Promise<
-  { id: string; user: { email: string }; status: string }[]
+  {
+    id: string;
+    user: { email: string; name: string };
+    status: string;
+    createdAt: Date;
+  }[]
 > => {
   try {
     const submissions = await Kyc.aggregate([
@@ -59,8 +64,14 @@ const getAllKycSubmissions = async (): Promise<
         $project: {
           status: 1,
           documentUrl: 1,
+          createdAt: 1,
           "user.email": 1,
           "user.name": 1,
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
         },
       },
     ]);
