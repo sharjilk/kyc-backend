@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { KycService } from "./kyc.service";
 import mongoose from "mongoose";
+import { User } from "../Auth/auth.model";
+import { Kyc } from "./Kyc.model";
 
 const KycSubmit = async (req: Request, res: Response) => {
   try {
@@ -70,9 +72,8 @@ const getKycStatus = async (req: Request, res: Response) => {
       return res.status(404).json({ status: null });
     }
 
-    res.status(200).json({ status: kycStatus });
+    res.status(200).json({ success: true, status: kycStatus });
   } catch (error) {
-    console.error("Error fetching KYC status:", error);
     res.status(500).json({
       success: false,
       message: "Error fetching KYC status",
@@ -87,10 +88,26 @@ const getAllSubmissions = async (req: Request, res: Response) => {
 
     res.status(200).json(submissions);
   } catch (error) {
-    console.error("Error fetching all submissions:", error);
     res.status(500).json({
       success: false,
       message: "Error fetching all submissions",
+      details: error,
+    });
+  }
+};
+
+const getKpiStats = async (req: Request, res: Response) => {
+  try {
+    const totalUsers = await User.countDocuments({ role: { $ne: "admin" } });
+    const approved = await Kyc.countDocuments({ status: "Approved" });
+    const rejected = await Kyc.countDocuments({ status: "Rejected" });
+    const pending = await Kyc.countDocuments({ status: "Pending" });
+
+    res.status(200).json({ totalUsers, approved, rejected, pending });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch KPI stats",
       details: error,
     });
   }
@@ -101,4 +118,5 @@ export const KycController = {
   KycUpdate,
   getKycStatus,
   getAllSubmissions,
+  getKpiStats,
 };

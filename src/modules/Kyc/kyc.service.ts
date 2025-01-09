@@ -58,7 +58,9 @@ const getAllKycSubmissions = async (): Promise<
       {
         $project: {
           status: 1,
-          "user.email": 1, // Include only the user's email
+          documentUrl: 1,
+          "user.email": 1,
+          "user.name": 1,
         },
       },
     ]);

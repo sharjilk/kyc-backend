@@ -51,4 +51,6 @@ router.get(
   KycController.getAllSubmissions
 );
 
+router.get("/kpi", verifyToken, isAdmin, KycController.getKpiStats);
+
 export { router as KycRouter };
