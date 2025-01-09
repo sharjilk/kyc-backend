@@ -10,7 +10,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://kyc-client-beryl.vercel.app/",
+    origin: "*", // For development
     credentials: true,
   })
 );
